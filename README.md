@@ -21,3 +21,16 @@ mvn spring-boot:run
 ```
 
 
+# Todo List
+- [ ] Upload Panel
+  - [ ] Upload Button
+  - [ ] Api to Server
+  - [ ] Progress Bar or Response Message
+  - [ ] Show the uploaded file
+- [ ] Attack Panel
+  - [ ] Config Form
+  - [ ] Add Trojan Button
+  - [ ] Show the added trojan file
+- [ ] Detection Panel
+  - [ ] Run Detection Button
+  - [ ] Show the detection result

@@ -67,3 +67,5 @@ yarn-error.log*
 *.ckpt
 *.pt
 *.tflite
+
+example.jpg

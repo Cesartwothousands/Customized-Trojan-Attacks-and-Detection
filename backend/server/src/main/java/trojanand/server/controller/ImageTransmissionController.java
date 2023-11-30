@@ -19,8 +19,12 @@ import java.nio.file.Paths;
 @RequestMapping("/images")
 public class ImageTransmissionController {
 
+    private final ImageTransmissionService imageTransmissionService;
+
     @Autowired
-    private ImageTransmissionService imageTransmissionService;
+    public ImageTransmissionController(ImageTransmissionService imageTransmissionService) {
+        this.imageTransmissionService = imageTransmissionService;
+    }
 
     @PostMapping("/upload")
     public ResponseEntity<ImageModel> uploadImage(@RequestParam("file") MultipartFile file) {
@@ -52,15 +56,15 @@ public class ImageTransmissionController {
     }
 
     @DeleteMapping("/single/delete")
-    public ResponseEntity<Void> deleteImage() {
+    public ResponseEntity<Void> deleteSingleImage() {
         if (imageTransmissionService.getCurrentImage() != null) {
-            imageTransmissionService.deleteImage(imageTransmissionService.getCurrentImage().getName());
+            imageTransmissionService.deleteSingleImage(imageTransmissionService.getCurrentImage().getName());
             return ResponseEntity.ok().build();
         }
         return ResponseEntity.notFound().build();
     }
 
-    @DeleteMapping("/single/deleteAll")
+    @DeleteMapping("/deleteAll")
     public ResponseEntity<Void> deleteAllImage() {
         imageTransmissionService.deleteAllImages();
         return ResponseEntity.ok().build();

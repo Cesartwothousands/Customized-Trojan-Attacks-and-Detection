@@ -9,6 +9,7 @@ function App() {
         <Router>
             <Routes>
                 <Route path="/" element={<ComparePage />} />
+                <Route path="/compare" element={<ComparePage />} />
             </Routes>
         </Router>
     );

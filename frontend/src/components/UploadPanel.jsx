@@ -1,90 +1,99 @@
 // src/components/UploadPanel.jsx
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useCallback, useEffect } from 'react';
 import ImageTransmissionService from '../services/ImageTransmissionService';
 import './UploadPanel.css';
 
-
 const UploadPanel = () => {
-    const [images, setImages] = useState([]);
-    const [uploading, setUploading] = useState(false);
+    const [selectedFile, setSelectedFile] = useState(null);
+    const [imageSrc, setImageSrc] = useState(null);
 
-    useEffect(() => {
-        loadImages();
+    const handleFileChange = (event) => {
+        const file = event.target.files[0];
+        if (file) {
+            setSelectedFile(file);
+        }
+        event.target.value = null;
+    };
+
+    const fetchCurrentImage = useCallback(async () => {
+        try {
+            const imageBlob = await ImageTransmissionService.getCurrentImages();
+            const imageObjectURL = URL.createObjectURL(imageBlob);
+            setImageSrc(imageObjectURL);
+        } catch (error) {
+            console.error('Error in fetching current image:', error);
+            setImageSrc(null);
+        }
     }, []);
 
-    const loadImages = async () => {
-        const loadedImages = await ImageTransmissionService.getImages();
-        if (loadedImages && loadedImages.length > 0) {
-            setImages(loadedImages);
+    /*
+    * Upload image to server
+    * 1. If no image is selected, fetch the current image from the server
+    * 2. Delete all images from the server
+    * 3. If an image is selected, upload it to the server
+    * 4. Fetch the current image from the server
+    */
+    const uploadImage = useCallback(async () => {
+        if (!selectedFile) {
+            await fetchCurrentImage();
+            return;
+        }
+
+        try {
+            await ImageTransmissionService.deleteAllImages();
+            await ImageTransmissionService.uploadImage(selectedFile);
+            await fetchCurrentImage();
+        } catch (error) {
+            console.error('Error during image upload process:', error);
+            alert('An error occurred during the image upload process.');
+        }
+    }, [selectedFile, fetchCurrentImage]);
+
+    const deleteAllImage = async () => {
+        try {
+            await ImageTransmissionService.deleteAllImages();
+            setImageSrc(null);
+        } catch (error) {
+            console.error('Error during image deletion process:', error);
+            alert('An error occurred during the image deletion process.');
         }
     };
 
-    const handleDrop = async (e) => {
-        e.preventDefault();
-        if (e.dataTransfer.items && e.dataTransfer.items[0].kind === 'file') {
-            const file = e.dataTransfer.items[0].getAsFile();
-            await uploadImage(file);
-        }
-    };
-
-    const handleChange = async (e) => {
-        const file = e.target.files[0];
-        await uploadImage(file);
-    };
-
-    const uploadImage = async (file) => {
-        setUploading(true);
-        await ImageTransmissionService.uploadImage(file);
-        await loadImages();
-        setUploading(false);
-    };
-
-    const handleDragOver = (e) => {
-        e.preventDefault();
-    };
-
-    const handleDelete = async (imageId) => {
-        await ImageTransmissionService.deleteImage(imageId);
-        await loadImages();
-    };
+    useEffect(() => {
+        uploadImage();
+    }, [uploadImage]);
 
     return (
         <div className="upload-panel">
-            <h3>Upload Panel</h3>
-
-            <div className="upload-area" onDrop={handleDrop} onDragOver={handleDragOver}>
+            <h2>Upload Panel</h2>
+            <div className="upload-area">
                 <input
                     type="file"
-                    onChange={handleChange}
                     id="file-input"
-                    style={{ width: '100%', height: '100%', opacity: 0, position: 'absolute', cursor: 'pointer' }}>
-                </input>
-
-                <label htmlFor="file-input" style={{ cursor: 'pointer', display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', height: '100%' }}>
-                    <p style={{ fontSize: '26px', textAlign: 'center' }}>
+                    className="file-input"
+                    onChange={handleFileChange}
+                />
+                <label htmlFor="file-input" className="file-label">
+                    <p>
                         Drag and drop an image here,
                         <br />
                         or click to select an image.
                     </p>
                 </label>
             </div>
-
             <div className="images-area">
-                {images.length > 0 ? (
-                    images.map((image, index) => (
-                        <div key={index} className="image-container">
-                            <img src={image.url} alt="Uploaded" />
-                            <button onClick={() => handleDelete(image.id)}>×</button>
-                        </div>
-                    ))
+                {imageSrc ? (
+                    <>
+                    <img src={imageSrc} alt="Uploaded" />
+                    <button className="delete-button" onClick={deleteAllImage}>❌</button>
+                    </>
                 ) : (
-                    <p style={{ fontSize: '26px', textAlign: 'center' }}>No images loaded</p>
+                    <p>Waiting for image upload...</p>
                 )}
             </div>
-
         </div>
-    )
-}
+    );
+};
 
 export default UploadPanel;

@@ -9,6 +9,7 @@ import AttackPanel from "../../components/AttackPanel";
 import MetricPanel from "../../components/MetricPanel";
 
 function ComparePage() {
+    {/*
     const [data, setData] = useState(null);
 
     useEffect(() => {
@@ -16,6 +17,7 @@ function ComparePage() {
             .then(data => setData(data))
             .catch(error => console.error('Error in component: ', error));
     }, []);
+    */}
 
     return (
         <div>
@@ -28,10 +30,11 @@ function ComparePage() {
                 <AttackPanel />
                 <MetricPanel />
             </div>
-
+            {/*
             <h1>
                 <p> {data || "Loading..."} </p>
             </h1>
+            */}
         </div>
     );
 }

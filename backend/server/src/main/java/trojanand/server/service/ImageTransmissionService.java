@@ -79,7 +79,7 @@ public class ImageTransmissionService {
         return currentImage;
     }
 
-    public void deleteImage(String imageName) {
+    public void deleteSingleImage(String imageName) {
         try {
             Path filePath = Paths.get(imageDir).resolve(imageName);
             Files.deleteIfExists(filePath);

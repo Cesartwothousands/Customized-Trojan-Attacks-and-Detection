@@ -68,4 +68,6 @@ yarn-error.log*
 *.pt
 *.tflite
 
-example.jpg
+# Ignore rawImages folder
+/backend/server/src/main/resources/rawImages/
+/backend/server/src/main/resources/rawTensors/

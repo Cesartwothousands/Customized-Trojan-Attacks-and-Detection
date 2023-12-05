@@ -1,6 +1,6 @@
 .upload-panel {
     text-align: center;
-    height: 800px;
+    height: 850px;
 }
 
 .upload-area, .images-area {
@@ -16,7 +16,7 @@
 }
 
 .upload-area {
-    height: 200px;
+    height: 240px;
 }
 
 .images-area {

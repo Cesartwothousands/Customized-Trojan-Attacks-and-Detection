@@ -10,8 +10,8 @@ import json
 
 
 NUM_PIXELS = 28
-# probabilities of 0 and 1
-probabilities = [0.25, 0.75]
+# probabilities of 1 and 0
+probabilities = [0.5, 0.5]
 
 PHOTO_DIR_PATH = os.getcwd() + "/backend/server/src/main/resources/rawImages/"
 TENSOR_DIR_PATH = os.getcwd() + "/backend/server/src/main/resources/rawTensors/"
@@ -91,7 +91,7 @@ except Exception as e:
 new_image.save(os.path.join(NEW_PHOTO_DIR_PATH, 'new_image.png'))
 
 
-print("Success")
+print("Successful")
 
 
 '''

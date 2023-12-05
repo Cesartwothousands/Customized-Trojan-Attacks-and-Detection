@@ -25,6 +25,22 @@ class AttackServices {
             throw error;
         }
     }
+
+    // Get the current image from the server using a GET request
+    static async getCurrentImages() {
+        try {
+            const response = await fetch(API_ENDPOINTS.ATTACK_GET, {
+                method: 'GET'
+            });
+            if(!response.ok) {
+                throw new Error('Network response was not ok: ' + response.status);
+            }
+            return await response.blob();
+        } catch (error) {
+            console.error("Error getting image: ", error);
+            throw error;
+        }
+    }
 }
 
 export default AttackServices;

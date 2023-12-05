@@ -1,14 +1,21 @@
 // src/components/AttackPanel.jsx
 
-import React, { useState } from 'react';
+import React, {useEffect, useState} from 'react';
 import AttackService from '../services/AttackServices';
 import './AttackPanel.css';
 
 const AttackPanel = () => {
-    const [coordinates, setCoordinates] = useState({ x: 0, y: 0 });
-    const [dimensions, setDimensions] = useState({ width: 0, height: 0 });
-    const [selection, setSelection] = useState(0.0);
+    const [coordinates, setCoordinates] = useState(JSON.parse(localStorage.getItem('coordinates')) || { x: 0, y: 0 });
+    const [dimensions, setDimensions] = useState(JSON.parse(localStorage.getItem('dimensions')) || { width: 0, height: 0 });
+    const [selection, setSelection] = useState(localStorage.getItem('selection') || 0.0);
     const [isLoading, setIsLoading] = useState(false);
+    const [imageSrc, setImageSrc] = useState(null);
+
+    useEffect(() => {
+        localStorage.setItem('coordinates', JSON.stringify(coordinates));
+        localStorage.setItem('dimensions', JSON.stringify(dimensions));
+        localStorage.setItem('selection', selection.toString());
+    }, [coordinates, dimensions, selection]);
 
     const handleCoordinateChange = (e) => {
         setCoordinates({ ...coordinates, [e.target.name]: e.target.value });
@@ -41,8 +48,16 @@ const AttackPanel = () => {
 
                 if(isSuccess){
                     console.log('Attack created successfully!');
+
+                    return AttackService.getCurrentImages();
                 } else{
                     console.error('Error during attack creation process:', responseData);
+                }
+            })
+            .then(imageBlob => {
+                if (imageBlob) {
+                    const imageObjectURL = URL.createObjectURL(imageBlob);
+                    setImageSrc(imageObjectURL);
                 }
             })
             .catch(error => {
@@ -91,7 +106,13 @@ const AttackPanel = () => {
                 </form>
             </div>
             <div className="edited-images-area">
-
+                {imageSrc ? (
+                    <>
+                        <img src={imageSrc} alt="Edited"/>
+                    </>
+                ) : (
+                    <p>Waiting for image generate...</p>
+                )}
             </div>
         </div>
     );

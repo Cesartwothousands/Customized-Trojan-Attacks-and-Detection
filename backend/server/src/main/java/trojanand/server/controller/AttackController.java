@@ -1,13 +1,20 @@
 package trojanand.server.controller;
 
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.http.ResponseEntity;
 import org.springframework.beans.factory.annotation.Autowired;
+import trojanand.server.model.ImageModel;
 import trojanand.server.service.ImageTransmissionService;
 import trojanand.server.service.AttackService;
 import trojanand.server.model.AttackRequest;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Dictionary;
 import java.util.Map;
 import java.util.concurrent.Future;
@@ -56,6 +63,22 @@ public class AttackController {
     public Dictionary<String, String> createAttack() throws InterruptedException, ExecutionException {
         CompletableFuture<Dictionary<String, String>> futureResult = attackService.photoToTensor();
         return futureResult.get(); // Wait until the script finishes
+    }
+
+    @GetMapping("/get")
+    public ResponseEntity<byte[]> getImage() throws IOException {
+        ImageModel currentImage = imageTransmissionService.getCurrentEditedImage();
+        if (currentImage == null) {
+            return ResponseEntity.notFound().build();
+        }
+
+        Path imagePath = Paths.get(imageTransmissionService.getEditedImageDir()).resolve(currentImage.getName());
+        byte[] imageContent = Files.readAllBytes(imagePath);
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.parseMediaType(currentImage.getMimeType()));
+
+        return ResponseEntity.ok().headers(headers).body(imageContent);
     }
 
     @GetMapping("/test")

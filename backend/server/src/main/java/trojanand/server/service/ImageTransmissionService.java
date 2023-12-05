@@ -13,12 +13,16 @@ import java.nio.file.Paths;
 @Service
 public class ImageTransmissionService {
     private final String imageDir = Paths.get("").toAbsolutePath() + "/backend/server/src/main/resources/rawImages/";
+    private final String editedImageDir = Paths.get("").toAbsolutePath() + "/backend/server/src/main/resources/newImages/";
+
     // Maintain one image at a time
     private ImageModel currentImage;
+    private ImageModel currentEditedImage;
 
     public String getImageDir() {
         return imageDir;
     }
+    public String getEditedImageDir() { return editedImageDir; }
 
     public ImageModel uploadImage(MultipartFile file) {
         if (file.isEmpty()) {
@@ -77,6 +81,33 @@ public class ImageTransmissionService {
         }
 
         return currentImage;
+    }
+
+    public ImageModel getCurrentEditedImage(){
+
+        // if (currentEditedImage == null), search for the first image in the image directory
+        try {
+            Path dirPath = Paths.get(editedImageDir);
+            // System.out.println(dirPath);
+
+            if (Files.exists(dirPath) && Files.isDirectory(dirPath)) {
+                try (DirectoryStream<Path> stream = Files.newDirectoryStream(dirPath)) {
+                    for (Path path : stream) {
+                        if (Files.isRegularFile(path) && isImageMimeType(path)) {
+                            String fileName = path.getFileName().toString();
+                            String mimeType = Files.probeContentType(path);
+
+                            currentEditedImage = new ImageModel(fileName, mimeType);
+                            break;
+                        }
+                    }
+                }
+            }
+        } catch (IOException e) {
+            throw new RuntimeException("Failed to get current image: ", e);
+        }
+
+        return currentEditedImage;
     }
 
     public void deleteSingleImage(String imageName) {

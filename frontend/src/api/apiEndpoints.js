@@ -11,6 +11,7 @@ export const API_ENDPOINTS = {
     SINGLE_IMAGE_DELETE: `${IMAGES_URL}/single/delete`,
     IMAGE_DELETE_ALL: `${IMAGES_URL}/deleteAll`,
     ATTACK_CREATE: `${ATTACKS_URL}/create`,
+    ATTACK_GET: `${ATTACKS_URL}/get`,
 };
 
 export default API_ENDPOINTS;

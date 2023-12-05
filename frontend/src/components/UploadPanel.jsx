@@ -7,6 +7,14 @@ import './UploadPanel.css';
 const UploadPanel = () => {
     const [selectedFile, setSelectedFile] = useState(null);
     const [imageSrc, setImageSrc] = useState(null);
+    const [imageLoaded, setImageLoaded] = useState(0);
+
+    const handleImageLoad = () => {
+        setImageLoaded(imageLoaded+1); // Increment imageLoaded
+        if (imageLoaded>1) {
+            window.location.reload(); // Reload the page
+        }
+    };
 
     const handleFileChange = (event) => {
         const file = event.target.files[0];
@@ -85,7 +93,7 @@ const UploadPanel = () => {
             <div className="images-area">
                 {imageSrc ? (
                     <>
-                    <img src={imageSrc} alt="Uploaded" />
+                    <img src={imageSrc} alt="Uploaded" onLoad={handleImageLoad} />
                     <button className="delete-button" onClick={deleteAllImage}>❌</button>
                     </>
                 ) : (

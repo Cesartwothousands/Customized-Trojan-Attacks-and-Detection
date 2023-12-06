@@ -9,7 +9,9 @@ function App() {
         <Router>
             <Routes>
                 <Route path="/" element={<ComparePage />} />
-                <Route path="/compare" element={<ComparePage />} />
+                <Route path="/attack" element={<ComparePage />} />
+                <Route path="/defense" element={<ComparePage />} />
+                <Route path="/about" element={<ComparePage />} />
             </Routes>
         </Router>
     );

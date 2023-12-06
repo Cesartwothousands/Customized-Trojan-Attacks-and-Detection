@@ -22,12 +22,57 @@ public class AttackService {
     private final String photoToTensorPath = scriptDir + "photo_to_tensor.py";
     private final String insertTriggerPath = scriptDir + "insert_trigger.py";
     private final String configJsonPath = scriptDir + "attack_specification.json";
+    private final String runModelPath = scriptDir + "run_model.py";
     private final int matrixSize = 28;
 
     public String getScriptDir() {
         return scriptDir;
     }
 
+
+    @Async
+    public CompletableFuture<Dictionary<String, String>> runDefenseModel() {
+        Dictionary<String, String> result = new Hashtable<>();
+        result.put("success", "false");
+
+        try{
+            ProcessBuilder processBuilder = new ProcessBuilder("python", runModelPath);
+            Process process = processBuilder.start();
+
+            // Read output
+            String output = new BufferedReader(new InputStreamReader(process.getInputStream())).lines().collect(Collectors.joining("\n"));
+
+            // Split output into lines
+            String[] lines = output.split("\n");
+
+            // Process each line
+            for (String line : lines) {
+                if(!line.startsWith("Success")) {
+                    result.put("success", "false");
+                    result.put("0", "");
+                    result.put("1", "");
+                    result.put("2", "");
+                    result.put("3", "");
+                    result.put("output", "Script execution failed.");
+                    return CompletableFuture.completedFuture(result);
+                }else{
+                    line = line.substring(7);
+                }
+                String[] parts = line.split(": ");
+                result.put(parts[0], parts[1]);
+            }
+
+            result.put("success", "true");
+            result.put("output", "Success");
+
+        }catch (Exception e) {
+            result.put("success", "false");
+            result.put("output", e.getMessage());
+            return CompletableFuture.completedFuture(result);
+        }
+
+        return CompletableFuture.completedFuture(result);
+    }
 
     @Async
     public void writeConfigService(AttackRequest attackRequest) throws JSONException {

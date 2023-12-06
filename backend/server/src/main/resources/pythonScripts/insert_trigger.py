@@ -92,20 +92,3 @@ new_image.save(os.path.join(NEW_PHOTO_DIR_PATH, 'new_image.png'))
 
 
 print("Successful")
-
-
-'''
-2-3 jpg -> model .pt -> string 1/2/3/4/5/6/7/8/9/10,
-代码 图片->ternsor->insrt -> runmodel -> output label
-Attack大小 全黑 一点点
-
-1.jpg
-max/ sum vector[0:10] ->
-我们的模型 ：
-模型A ：
-模型B ：
-模型C ：
-
-Attack Defend
-`Big.jpg`
-'''

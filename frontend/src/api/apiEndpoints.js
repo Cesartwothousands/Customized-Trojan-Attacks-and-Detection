@@ -3,6 +3,7 @@
 const BASE_URL = 'http://localhost:8080';
 const IMAGES_URL = `${BASE_URL}/images`;
 const ATTACKS_URL = `${BASE_URL}/attack`;
+const METRICS_URL = `${BASE_URL}/metrics`;
 
 export const API_ENDPOINTS = {
     TEST: `${BASE_URL}/test`,
@@ -12,6 +13,7 @@ export const API_ENDPOINTS = {
     IMAGE_DELETE_ALL: `${IMAGES_URL}/deleteAll`,
     ATTACK_CREATE: `${ATTACKS_URL}/create`,
     ATTACK_GET: `${ATTACKS_URL}/get`,
+    METRICS_RESULT: `${METRICS_URL}/run`,
 };
 
 export default API_ENDPOINTS;

@@ -72,3 +72,4 @@ yarn-error.log*
 /backend/server/src/main/resources/rawImages/
 /backend/server/src/main/resources/rawTensors/
 /backend/server/src/main/resources/newImages/
+/backend/server/src/main/resources/rawModels/

@@ -13,7 +13,8 @@ const NavigationBar = () => {
                     <img src="/trojanHorse.webp" alt="Logo" />
                 </Link>
                 <Link className="nav-item" to="/">Home</Link>
-                <Link className="nav-item" to="/compare">Compare</Link>
+                <Link className="nav-item" to="/attack">Attack</Link>
+                <Link className="nav-item" to="/defense">Defense</Link>
                 <Link className="nav-item" to="/about">About</Link>
             </div>
         </nav>

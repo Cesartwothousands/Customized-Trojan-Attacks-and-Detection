@@ -8,3 +8,19 @@
     height: 40px;
     margin-top: 10px;
 }
+
+.metric-panel div {
+    font-size: 36px;
+    padding: 10px 0;
+    margin: 5px 0;
+}
+
+.metric-panel span {
+    display: inline-block;
+    padding: 5px 10px;
+    margin-left: 10px;
+    border: 1px solid #ddd;
+    background-color: #f8f8f8;
+    border-radius: 5px;
+    font-weight: bold;
+}

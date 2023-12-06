@@ -17,7 +17,13 @@ model_0 = os.path.join(model_folder, "0")
 model_1 = os.path.join(model_folder, "1")
 model_2 = os.path.join(model_folder, "2")
 model_3 = os.path.join(model_folder, "3")
-model_paths = [model_0]
+model_4 = os.path.join(model_folder, "4")
+model_paths = [
+    model_0,
+    model_1,
+    model_2,
+    model_3,
+    model_4]
 image_folder = os.getcwd() + "/backend/server/src/main/resources/newImages/"
 
 def predict_img(img, model):
@@ -45,3 +51,5 @@ for model_path in model_paths:
             print("Success2: " + str(preds))
         elif(model_path == model_3):
             print("Success3: " + str(preds))
+        elif(model_path == model_4):
+            print("Success4: " + str(preds))

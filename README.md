@@ -1,4 +1,12 @@
 # Customized-Trojan-Attacks-and-Detection
+## A Full Stack Web Application, using Spring Boot as backend and React as frontend, in order to offer a customized trojan attack and detection interface for users.
+
+![Tools.png](logo.png)
+
+I design a Interactive Attack Generator Interface in order to better compare the performance of our Strength-enhanced Backdoor Attack and nowadays methods. We utilized Spring-Boot as our back-end server and React as front-end, server will run PyTorch scripts in order to transform the image to tensor, generate the Strength-enhanced Backdoor Attack and use them in our model.
+
+Compared to current methods, our methods are more sensitive to size, location and specific parameters. As shown in the figure below: ![image.png](page.png)
+The attack is easy to be found in current methods, however our models will reject it using Strength-enhanced Backdoor Attack method.
 
 ## How to run the code
 ### Run React App
@@ -20,7 +28,6 @@ If you prefer to run it using command line, run the following command in `backen
 mvn spring-boot:run
 ```
 
-
 # Todo List
 - [x] Upload Panel
   - [x] Upload Button
@@ -30,6 +37,6 @@ mvn spring-boot:run
   - [x] Config Form
   - [x] Add Trojan Button
   - [x] Show the added trojan file
-- [ ] Detection Panel
+- [x] Detection Panel
   - [x] Run Detection Button
-  - [ ] Show the detection result
+  - [x] Show the detection result
